@@ -1,0 +1,7 @@
+{
+  "name": "GamecockStore",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

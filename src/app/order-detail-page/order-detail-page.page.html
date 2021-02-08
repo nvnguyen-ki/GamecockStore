@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>order detail page</ion-title>
+  <ion-toolbar color="danger">
+    <ion-title >order detail page</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content>
+<ion-item>
+order name: {{order.item}}
+</ion-item>
+
 <ion-item>
 order id: {{order.id}}
 </ion-item>

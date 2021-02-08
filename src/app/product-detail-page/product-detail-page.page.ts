@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
-import { products } from '../services/products.service';
+import { AlertController } from '@ionic/angular';
+import { orders } from '../services/orders.service';
 
 @Component({
   selector: 'app-product-detail-page',
@@ -9,13 +10,10 @@ import { products } from '../services/products.service';
 })
 export class ProductDetailPagePage implements OnInit {
 
-   // item={text:"fish sea",price:10,quantity:100,src:'https://i.pinimg.com/564x/c1/73/98/c17398f6af7af7cfe942a8b549eed534.jpg'}
-   item=null
-   order={quantity:1}
-   orders=[];
+  item = null
+  order = {quantity:1}
 
-  constructor(public products:products, private route:ActivatedRoute ) {}
-
+  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router ) {}
   ngOnInit() {
 
   	console.log("OnInit");
@@ -26,5 +24,23 @@ export class ProductDetailPagePage implements OnInit {
   		}
   		)
   }
+
+  orderitem(){
+    let id = Math.random() * 999999
+		var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var todayStr = mm + '/' + dd + '/' + yyyy;
+    var totalPrice = this.order.quantity * this.item.price
+  	this.orderService.createOrder((id), this.item.name, this.item.price, this.order.quantity, todayStr, totalPrice)
+    console.log(this.orderService.userOrders)
+    this.goHome()
+  }
+
+  goHome(){
+    this.router.navigate(['/']);
+  }
+
 
 }

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="danger">
     <ion-title>detail page</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -11,14 +11,14 @@
 
 <ion-item>
 
- <ion-range min="1" max="100" step="1" pin='true'  [(ngModel)]="order.quantity" (ionChange)='change()'>
+ <ion-range min="1" max="100" step="1" pin='true'  [(ngModel)]="order.quantity">
     <ion-icon size="small" slot="start" name="sunny"></ion-icon>
     <ion-icon slot="end" name="sunny"></ion-icon>
   </ion-range>
   <p>quantity: {{order.quantity}}</p>
   <ion-item>
-  <ion-button (click)="orderme()">
-    <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+  <ion-button (click)="orderitem()">
+    order
   </ion-button>
   </ion-item>
 </ion-item>
@@ -33,6 +33,11 @@ Price: ${{ item.price}}
 
 <ion-item>
 Category: {{item.category}}
+</ion-item>
+
+
+<ion-item>
+Description: {{item.description}}
 </ion-item>
 
 </ion-content>

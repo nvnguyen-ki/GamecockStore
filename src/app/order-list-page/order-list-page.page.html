@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title >Order Details</ion-title>
+    
+ </ion-toolbar>
+ </ion-header>
+ <ion-content [fullscreen]="true">
+  <ion-header>
+  <ion-toolbar>
+  <ion-title >Your order list</ion-title>
+  </ion-toolbar>
+    </ion-header>
+  <ion-card *ngFor="let order of orderList" (click)="viewOrder(order)">
+    <ion-item >
+      <ion-label text-wrap>order id: {{order.id}}</ion-label>
+      <ion-label text-wrap>quantity: {{order.quantity}}</ion-label>
+      <ion-label text-wrap>date: {{order.date}}</ion-label>
+      <ion-label text-wrap>total: {{order.amount}}</ion-label>
+    </ion-item>
+  </ion-card>

@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add new item to stock</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+<form [formGroup]="itemDetails" (submit)="addItem(itemDetails.value)">
+    <ion-item>
+      <ion-label color="primary" position="floating">Name</ion-label>
+      <ion-input type="text" formControlName="name" required></ion-input>
+    </ion-item>
+    <ion-item text-wrap>
+      <ion-label color="primary" position="floating">Price</ion-label>
+      <ion-input type="text" formControlName="price" required></ion-input>
+    </ion-item>
+    <ion-item>Category</ion-item>
+    <ion-item>
+     <ion-label text-wrap>Toy</ion-label>
+    <ion-checkbox color="primary" formControlName="toy"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+     <ion-label text-wrap>Food</ion-label>
+    <ion-checkbox color="primary" formControlName="food"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+     <ion-label text-wrap>Drink</ion-label>
+    <ion-checkbox color="primary" formControlName="drink"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Photo URL</ion-label>
+      <ion-input type="text" formControlName="url" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="primary" position="floating">Description</ion-label>
+      <ion-input type="text" formControlName="description" required></ion-input>
+    </ion-item>
+
+
+
+<!-- <ion-item>
+  <ion-label>MM DD YY</ion-label>
+  <ion-datetime displayFormat="MM DD YY" placeholder="Select Date" formControlName="date"></ion-datetime>
+</ion-item> -->
+
+    <ion-button class="submit-btn" expand="block" type="submit" [disabled]="!itemDetails.valid">Create</ion-button>
+  </form>
+
+</ion-content>
+

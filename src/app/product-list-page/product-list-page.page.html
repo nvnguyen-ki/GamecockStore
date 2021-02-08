@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title >GameCock Store</ion-title>
+    
+<ion-buttons slot="end">
+      <ion-button (click)="newItemView()">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+      </ion-button>
+</ion-buttons>
+ </ion-toolbar>
+ </ion-header>
+ <ion-content [fullscreen]="true">
+  <ion-header>
+  <ion-toolbar>
+  <ion-title >Items Available</ion-title>
+  </ion-toolbar>
+    </ion-header>
+  <ion-card *ngFor="let item of itemList" (click)="viewItem(item)">
+    <ion-item >
+      <ion-thumbnail slot="start">
+        <ion-img [src]="item.src"></ion-img>
+      </ion-thumbnail>
+      <ion-label text-wrap>{{item.name}}</ion-label>
+      <ion-label text-wrap>${{item.price}}</ion-label>
+      <ion-label text-wrap>{{item.category}}</ion-label>
+      <ion-label text-wrap>{{item.quantity}}</ion-label>
+    </ion-item>
+  </ion-card>
+</ion-content>
+
+ 
+
+    
+

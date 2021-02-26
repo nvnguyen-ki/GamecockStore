@@ -18,7 +18,7 @@ export class orders {
 
     }
 
-    createOrder(id:any,item:any, price:any, quantity:any, date:any, amount:any){
+    createOrder(id:any,item:any, price:any, quantity:any, date:any, amount:any, userid:any){
       this.userOrders.push({id:id, item:item,price:price, quantity:quantity, date:date,amount:amount});
     }
 

@@ -20,6 +20,8 @@ export class OrderListPagePage {
   viewOrder(order){
     this.router.navigate(["/order-detail-page",order])
   }
+
+  
   
 
 }

@@ -2,18 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { orders } from '../services/orders.service';
-
+import firebase from 'firebase/app';
+import 'firebase/auth';
 @Component({
   selector: 'app-product-detail-page',
   templateUrl: './product-detail-page.page.html',
   styleUrls: ['./product-detail-page.page.scss'],
 })
 export class ProductDetailPagePage implements OnInit {
-
+  userid :any
   item = null
   order = {quantity:1}
 
-  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router ) {}
+  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router ) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User logged in already or has just logged in.
+        console.log(user.uid);
+        this.userid = user.uid
+      } else {
+        
+      }
+    });
+  }
   ngOnInit() {
 
   	console.log("OnInit");
@@ -33,7 +44,7 @@ export class ProductDetailPagePage implements OnInit {
     var yyyy = today.getFullYear();
     var todayStr = mm + '/' + dd + '/' + yyyy;
     var totalPrice = this.order.quantity * this.item.price
-  	this.orderService.createOrder((id), this.item.name, this.item.price, this.order.quantity, todayStr, totalPrice)
+  	this.orderService.createOrder((id), this.item.name, this.item.price, this.order.quantity, todayStr, totalPrice, this.userid)
     console.log(this.orderService.userOrders)
     this.goHome()
   }

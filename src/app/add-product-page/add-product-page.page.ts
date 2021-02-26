@@ -22,9 +22,9 @@ export class AddProductPagePage implements OnInit {
     this.itemDetails = this.formBuilder.group({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      toy: new FormControl(false, Validators.required),
-      food: new FormControl(false, Validators.required),
-      drink: new FormControl(false, Validators.required),
+      Top: new FormControl(false, Validators.required),
+      Bottom: new FormControl(false, Validators.required),
+      Outfit: new FormControl(false, Validators.required),
       price: new FormControl(false, Validators.required),
       url: new FormControl(false, Validators.required)
       // date:new FormControl('', Validators.required)
@@ -37,13 +37,13 @@ export class AddProductPagePage implements OnInit {
   addItem(value){
     var checkedCategory:any
     if(value.toy === true) {
-      checkedCategory = 'Toy'
+      checkedCategory = 'Top'
     }
   	if(value.drink === true) {
-      checkedCategory = 'Drink'
+      checkedCategory = 'Bottom'
     }
   	if(value.food === true) {
-      checkedCategory = 'Food'
+      checkedCategory = 'Outfit'
     }
     this.productService.createItem(value.name,value.price, checkedCategory, value.url, value.description);
     this.goHome()

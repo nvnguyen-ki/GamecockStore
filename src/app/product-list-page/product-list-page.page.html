@@ -1,15 +1,29 @@
 <ion-header >
+
   <ion-toolbar color="danger">
+
+  <ion-buttons slot="start">
+    <ion-button (click)="goLogin()" [disabled]="isLoggedIn()">
+        <ion-icon name="log-in-outline"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+   <ion-buttons slot="start">
+    <ion-button (click)="signOut()" [disabled]="!isLoggedIn()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+  </ion-buttons>
+  
+  
     <ion-title >GameCock Store</ion-title>
     
 <ion-buttons slot="end">
-      <ion-button (click)="newItemView()">
+      <ion-button (click)="newItemView()" [disabled]="!isOwner()">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
 </ion-buttons>
  </ion-toolbar>
  </ion-header>
- <ion-content [fullscreen]="true">
+ <ion-content [fullscreen]="true" id="main-content">
   <ion-header>
   <ion-toolbar>
   <ion-title >Items Available</ion-title>

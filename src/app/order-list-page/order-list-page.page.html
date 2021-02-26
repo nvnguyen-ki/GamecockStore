@@ -11,11 +11,12 @@
   <ion-title >Your order list</ion-title>
   </ion-toolbar>
     </ion-header>
-  <ion-card *ngFor="let order of orderList" (click)="viewOrder(order)">
+  <ion-card *ngFor="let order of (orderList|async)" (click)="viewOrder(order)">
     <ion-item >
-      <ion-label text-wrap>order id: {{order.id}}</ion-label>
+      <ion-label text-wrap>order id: {{order.name}}</ion-label>
       <ion-label text-wrap>quantity: {{order.quantity}}</ion-label>
       <ion-label text-wrap>date: {{order.date}}</ion-label>
       <ion-label text-wrap>total: {{order.amount}}</ion-label>
+      <ion-label text-wrap>total: {{order.id}}</ion-label>
     </ion-item>
   </ion-card>

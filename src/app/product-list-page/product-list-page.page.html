@@ -29,7 +29,7 @@
   <ion-title >Items Available</ion-title>
   </ion-toolbar>
     </ion-header>
-  <ion-card *ngFor="let item of itemList" (click)="viewItem(item)">
+  <ion-card *ngFor="let item of (itemList|async)" (click)="viewItem(item)">
     <ion-item >
       <ion-thumbnail slot="start">
         <ion-img [src]="item.src"></ion-img>

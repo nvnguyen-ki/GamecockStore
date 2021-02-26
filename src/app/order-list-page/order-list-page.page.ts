@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Order } from '../modal/order';
 import { orders } from '../services/orders.service';
 
 @Component({
@@ -9,7 +11,7 @@ import { orders } from '../services/orders.service';
 })
 export class OrderListPagePage {
 
-  orderList = []
+  orderList:Observable<Order[]>
   public loaded: boolean = false;
   constructor(private router: Router, public orderService: orders) {
 

@@ -1,30 +1,47 @@
 import { Injectable } from '@angular/core';
+import {Storage} from '@ionic/storage'
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import firebase from 'firebase/app';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Product } from '../modal/product';
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class products {
   
-    
+  private items: Observable<Product[]>;
+  private itemsCollection:AngularFirestoreCollection<Product>;
 
-    itemList= [
-        {name:"Hoodie", price:29.99, quantity:100, category:"Clothes", src:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZEz1w_KXESP53LY2TjpeKKyxzin7RxbOEDg&usqp=CAU", description:"Soft cozy Hoodie."},
-        {name:"Sweatshirt", price:39.99, quantity:100, category:"Clothes", src:"https://i.pinimg.com/474x/a1/f8/63/a1f863a3e9f157fa0d4e08a9be0494e7.jpg", description:"Soft cozy Sweatshirt."},
-        {name:"Sweatpants", price:20.00, quantity:100, category:"Clothes", src:"https://staticx.ibncollege.com/wcsstore/ExtendedSitesCatalogAssetStore/801_400_10_299570171/images/SMALLIMAGE_1448652.jpg", description:"Soft cozy Sweatpants."},
-        {name:"Polo", price:50.00, quantity:100, category:"Clothes", src:"https://staticx.ibncollege.com/wcsstore/ExtendedSitesCatalogAssetStore/801_200_130_317526983/images/SMALLIMAGE_1805886.jpg", description:"Cool Polo."},
-        {name:"Jacket", price:69.99, quantity:100, category:"Clothes", src:"https://staticx.ibncollege.com/wcsstore/ExtendedSitesCatalogAssetStore/813_100_30_258659380/images/SMALLIMAGE_2107503.jpg", description:"Soft cozy Jacket."}
-    ]
-
-    constructor() { 
-
+    constructor(private db: AngularFirestore) { 
+      
+      this.itemsCollection = this.db.collection<Product>('products');
+      this.items = this.itemsCollection.snapshotChanges().pipe(
+      map( actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data}
+        });
+      }))
     }
 
-    createItem(name:any,price:number, category:any, url:any, description:any){
-      this.itemList.push({name:name,price:price,quantity:100, category:category, src:url, description:description});
+    createItem(name:any,price:any, category:any, url:any, description:any, uid:any) : Promise<void>{
+      var data: Product
+      data = {
+        name: name,
+        price: price,
+        category: category || '',
+        src: url,
+        description: description,
+        userid:uid
+      };
+      const id = this.db.createId();
+      return this.db.collection("products").doc(id).set(Object.assign({}, data));
     }
 
     returnList(){
-		return this.itemList;
-	}
+		  return this.items;
+	  }
 }

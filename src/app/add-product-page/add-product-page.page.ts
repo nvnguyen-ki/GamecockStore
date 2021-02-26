@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { products } from '../services/products.service';
-
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 @Component({
   selector: 'app-add-product-page',
   templateUrl: './add-product-page.page.html',
@@ -10,14 +12,24 @@ import { products } from '../services/products.service';
 })
 export class AddProductPagePage implements OnInit {
   itemDetails: FormGroup;
-
+  userid:any
   constructor(
-    private router: Router,
-   public formBuilder: FormBuilder,
-       public productService: products
-
-) { }
-
+  private router: Router,
+  public formBuilder: FormBuilder,
+  public productService: products,
+  public fb:AngularFireAuthModule
+  
+) { 
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      // User logged in already or has just logged in.
+      console.log(user.uid);
+      this.userid = user.uid
+    } else {
+      
+    }
+  });
+}
   ngOnInit() {
     this.itemDetails = this.formBuilder.group({
       name: new FormControl('', Validators.required),
@@ -31,22 +43,21 @@ export class AddProductPagePage implements OnInit {
     });
   }
   goHome(){
-    this.router.navigate(['/product-list-page']);
+    this.router.navigate(['']);
   }
 
-  addItem(value){
+  async addItem(value){
     var checkedCategory:any
     if(value.toy === true) {
       checkedCategory = 'Top'
     }
-  	if(value.drink === true) {
+  	else if (value.drink === true) {
       checkedCategory = 'Bottom'
     }
-  	if(value.food === true) {
+  	else {
       checkedCategory = 'Outfit'
     }
-    this.productService.createItem(value.name,value.price, checkedCategory, value.url, value.description);
+    this.productService.createItem(value.name,value.price, checkedCategory, value.url, value.description, this.userid);
     this.goHome()
-
   }
 }

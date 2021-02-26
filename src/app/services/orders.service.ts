@@ -1,28 +1,44 @@
 import { Injectable } from '@angular/core';
-
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { Order } from '../modal/order';
+import firebase from 'firebase/app';
+import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
 
 export class orders {
+  private order: Observable<Order[]>;
+  private orderCollection:AngularFirestoreCollection<Order>;
+    
 
-    userOrders = [
-      {id:1,item:"Hoodie", price:29.99, quantity:5,date:'02/01/2021',amount:149.95},
-      {id:2,item:"Polo", price:50.00,quantity:2,date:'02/01/2021',amount:100.00},
-      {id:3,item:"Sweatpants", price:20.00, quantity:1,date:'02/03/2021',amount:20.00},
-      {id:4,item:"Jacket", price:69.99,quantity:1,date:'02/05/2021',amount:69.99},
-      {id:5,item:"Sweatshirt", price:39.99,quantity:1,date:'02/08/2021',amount:39.99}
-    ]
-
-    constructor() { 
-
+    constructor(private db: AngularFirestore) { 
+      this.orderCollection = this.db.collection<Order>('orders');
+      this.order = this.orderCollection.snapshotChanges().pipe(
+      map( actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return {id, ...data}
+        });
+      }))
     }
+    
 
-    createOrder(id:any,item:any, price:any, quantity:any, date:any, amount:any, userid:any){
-      this.userOrders.push({id:id, item:item,price:price, quantity:quantity, date:date,amount:amount});
+    createOrder(name:any, quantity:any, date:any, amount:any, uid:any){
+      var data: Order
+      data = {
+        name: name,
+        quantity: quantity || '',
+        date: date,
+        amount: amount,
+        userid:uid
+      };
+      return this.db.collection("orders").doc(uid).update(Object.assign({}, ...[data]))
     }
 
     returnOrder(){
-		return this.userOrders;
+		return this.order;
 	}
 }

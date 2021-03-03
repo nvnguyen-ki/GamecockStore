@@ -5,6 +5,7 @@ import { products } from '../services/products.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-add-product-page',
   templateUrl: './add-product-page.page.html',
@@ -13,23 +14,25 @@ import 'firebase/auth';
 export class AddProductPagePage implements OnInit {
   itemDetails: FormGroup;
   userid:any
+  
+  
+  
   constructor(
   private router: Router,
   public formBuilder: FormBuilder,
   public productService: products,
-  public fb:AngularFireAuthModule
-  
-) { 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // User logged in already or has just logged in.
-      console.log(user.uid);
-      this.userid = user.uid
+  public fb:AngularFireAuthModule,
+  public alertController: AlertController
+  ) { 
+    var user = localStorage.getItem("user")
+    // check if local storage isn't empty
+    if (JSON.parse(user) !== null) {
+      this.userid = JSON.parse(user).uid
     } else {
-      
+      console.log("currently not logged in!")
     }
-  });
-}
+
+  }
   ngOnInit() {
     this.itemDetails = this.formBuilder.group({
       name: new FormControl('', Validators.required),
@@ -42,22 +45,25 @@ export class AddProductPagePage implements OnInit {
       // date:new FormControl('', Validators.required)
     });
   }
+
+ 
+
   goHome(){
     this.router.navigate(['']);
   }
 
   async addItem(value){
     var checkedCategory:any
-    if(value.toy === true) {
+    if(value.Top === true) {
       checkedCategory = 'Top'
     }
-  	else if (value.drink === true) {
+  	else if (value.Bottom === true) {
       checkedCategory = 'Bottom'
     }
   	else {
       checkedCategory = 'Outfit'
     }
-    this.productService.createItem(value.name,value.price, checkedCategory, value.url, value.description, this.userid);
+    await this.productService.createItem(value.name,value.price, checkedCategory, value.url, value.description, this.userid);
     this.goHome()
   }
 }

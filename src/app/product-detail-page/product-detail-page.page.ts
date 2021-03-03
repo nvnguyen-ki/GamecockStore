@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { orders } from '../services/orders.service';
+import { orders, } from '../services/orders.service';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { products } from '../services/products.service';
 @Component({
   selector: 'app-product-detail-page',
   templateUrl: './product-detail-page.page.html',
@@ -13,20 +15,19 @@ export class ProductDetailPagePage implements OnInit {
   userid :any
   item = null
   order = {quantity:1}
+  loginInfo: any;
 
-  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router ) {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User logged in already or has just logged in.
-        console.log(user.uid);
-        this.userid = user.uid
-      } else {
-        
-      }
-    });
+  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router, public fbAuth: AngularFireAuth, public productService: products ) {
+    var user = localStorage.getItem("user")
+    // check if local storage isn't empty
+    if (JSON.parse(user) !== null) {
+      this.userid = JSON.parse(user).uid
+    } else {
+      console.log("currently not logged in!")
+    }
   }
-  ngOnInit() {
 
+  ngOnInit() {
   	console.log("OnInit");
   	this.route.params.subscribe(
   		param=>{
@@ -36,17 +37,62 @@ export class ProductDetailPagePage implements OnInit {
   		)
   }
 
-  orderitem(){
-    let id = Math.random() * 999999
-		var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    var todayStr = mm + '/' + dd + '/' + yyyy;
-    var totalPrice = this.order.quantity * this.item.price
-  	this.orderService.createOrder(this.item.name, this.order.quantity, todayStr, totalPrice, this.userid)
-    this.goHome()
+  async errorAlert() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'ALERT',
+      message: 'Seems like you are not logged in!',
+      buttons: ['OK']
+    });
+    await alert.present();
   }
+
+
+  orderitem(){
+    if (this.userid===undefined) {
+      this.errorAlert()
+    } else {
+      let id = Math.random() * 999999
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      var todayStr = mm + '/' + dd + '/' + yyyy;
+      var totalPrice = this.order.quantity * this.item.price
+      this.orderService.createOrder(this.item.name, this.order.quantity, todayStr, totalPrice, this.userid)
+      this.goHome()
+    }
+    
+  }
+
+  deleteProduct(){
+    if (this.userid === "v9WDsBRoBYPcHOFWWFJmIIrhfSq2") {
+      this.productService.deleteProduct(this.item);
+      this.goHome()
+    }
+    else {
+      this.productService.notOwnerAlert()
+    }
+  }
+
+  editProduct(){
+    if (this.userid === "v9WDsBRoBYPcHOFWWFJmIIrhfSq2")
+      this.router.navigate(['edit-product-page',this.item])
+    else {
+      this.productService.notOwnerAlert()
+    }
+  }
+
+
+  // editProduct(){
+  //   if (this.userid === "v9WDsBRoBYPcHOFWWFJmIIrhfSq2") {
+  //     this.productService.editProduct(this.item);
+  //     this.goHome()
+  //   }
+  //   else {
+  //     this.notOwnerAlert()
+  //   }
+  // }
 
   goHome(){
     this.router.navigate(['/']);

@@ -33,6 +33,10 @@ const routes: Routes = [
   {
     path: 'register-page',
     loadChildren: () => import('./register-page/register-page.module').then( m => m.RegisterPagePageModule)
+  },
+  {
+    path: 'edit-product-page',
+    loadChildren: () => import('./edit-product-page/edit-product-page.module').then( m => m.EditProductPagePageModule)
   }
 ];
 @NgModule({

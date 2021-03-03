@@ -3,18 +3,21 @@ import {Storage} from '@ionic/storage'
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { Product } from '../modal/product';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class products {
   
+  
+  
   private items: Observable<Product[]>;
   private itemsCollection:AngularFirestoreCollection<Product>;
 
-    constructor(private db: AngularFirestore) { 
+    constructor(private db: AngularFirestore, private alertController: AlertController) { 
       
       this.itemsCollection = this.db.collection<Product>('products');
       this.items = this.itemsCollection.snapshotChanges().pipe(
@@ -25,6 +28,34 @@ export class products {
           return {id, ...data}
         });
       }))
+    }
+
+    deleteProduct(item: any) {
+      this.db.collection("products").doc(item.id).delete()
+    }
+
+    async notOwnerAlert() {
+      const alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'ALERT:',
+        message: 'Only owner can delete or edit',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+
+    editProduct(item: any) {
+      return this.db.collection("products").doc(item.id).update({description:item.description, name: item.name, price: item.price, src:item.src});
+    }
+
+    getProduct(id: string): Observable<Product> {
+      return this.itemsCollection.doc<Product>(id).valueChanges().pipe(
+          take(1),
+          map(item => {
+            console.log(item)
+            return item;
+          })
+      );
     }
 
     createItem(name:any,price:any, category:any, url:any, description:any, uid:any) : Promise<void>{

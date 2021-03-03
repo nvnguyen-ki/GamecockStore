@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { orders } from '../services/orders.service';
 
 @Component({
@@ -11,8 +11,17 @@ export class OrderDetailPagePage implements OnInit {
 
 
   order=null;
+  userid: any;
 
-  constructor(public ordersList:orders, private route:ActivatedRoute ) {}
+  constructor(public ordersList:orders, private route:ActivatedRoute, private router: Router ) {
+    var user = localStorage.getItem("user")
+    // check if local storage isn't empty
+    if (JSON.parse(user) !== null) {
+      this.userid = JSON.parse(user).uid
+    } else {
+      console.log("currently not logged in!")
+    }
+  }
 
   ngOnInit() {
 
@@ -23,6 +32,11 @@ export class OrderDetailPagePage implements OnInit {
   			console.log(this.order)
   		}
   	)
+  }
+
+  deleteOrder(){
+      this.ordersList.deleteOrder(this.order,this.userid);
+      this.router.navigate(["tabs/order-list-page"])
   }
 
 }

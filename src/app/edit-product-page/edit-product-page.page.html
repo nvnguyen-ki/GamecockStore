@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title>edit product page</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item>
+      Name: <ion-input [(ngModel)]="product.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      Price: <ion-input placeholder="change price" [(ngModel)]="product.price"></ion-input>
+    </ion-item>
+    <ion-item>
+      Description: <ion-textarea placeholder="change description" [(ngModel)]="product.description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      Image source: <ion-textarea placeholder="change description" [(ngModel)]="product.src"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-button color="primary" expand="full" (click)="editProduct()">edit</ion-button>
+</ion-content>

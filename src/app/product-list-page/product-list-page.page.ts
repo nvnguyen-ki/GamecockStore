@@ -6,35 +6,32 @@ import {authentication} from '../services/auth.service'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { Observable } from 'rxjs';
+import { ViewWillEnter } from '@ionic/angular';
 @Component({
   selector: 'app-product-list-page',
   templateUrl: './product-list-page.page.html',
   styleUrls: ['./product-list-page.page.scss'],
 })
-export class ProductListPagePage {
-  userid:any
+export class ProductListPagePage implements OnInit{
   itemList:Observable<any[]>
   public loaded: boolean = false;
   constructor(private router: Router, public productService: products, public fbauth: authentication) {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User logged in already or has just logged in.
-        console.log(user.uid);
-        this.userid = user.uid
-      } else {
-      }
-    });
-    this.itemList= this.productService.returnList();
-    console.log("Initiating product list page constructor.")
-    console.log(this.itemList)
+    
   }
-  
-  viewItem(item){
+  ngOnInit(): void {
+    this.itemList= this.productService.returnList();
+  }
+
+  viewItem(item:any){
     this.router.navigate(["/product-detail-page",item])
   }
 
   newItemView(){
-    this.router.navigate(["/add-product-page"])
+    if (this.fbauth.returnUserID() ==="v9WDsBRoBYPcHOFWWFJmIIrhfSq2") {
+      this.router.navigate(["/add-product-page"])
+    } else {
+      this.productService.notOwnerAlert()
+    }
   }
 
   goLogin(){
@@ -43,6 +40,7 @@ export class ProductListPagePage {
 
   signOut(){
     this.fbauth.fblogout()
+    this.goLogin()
   }
 
   isLoggedIn(){
@@ -54,11 +52,5 @@ export class ProductListPagePage {
     }
   }
 
-  isOwner(){
-    if (this.userid != "v9WDsBRoBYPcHOFWWFJmIIrhfSq2") {
-      return false
-    } else {
-      return true
-    }
-  }
+  
 }

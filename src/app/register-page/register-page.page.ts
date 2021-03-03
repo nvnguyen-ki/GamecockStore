@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import {authentication} from '../services/auth.service'
 
 @Component({
@@ -9,17 +10,15 @@ import {authentication} from '../services/auth.service'
 })
 export class RegisterPagePage implements OnInit {
 
-  constructor(public authService: authentication,
-    public router: Router) { }
+  constructor(public fbAuth: authentication,
+    public router: Router, public alertController:AlertController) { }
 
   ngOnInit() {}
 
-  register(email:any, password:any){
-    this.authService.Fbregister(email.value, password.value)      
-    .then((res) => {
-    }).catch((error) => {
-      window.alert(error.message)
-    })
+
+  async register(email:any, password:any){
+    console.log(await this.fbAuth.Fbregister(email.value, password.value))
+    
 }
 
   goLogin(){

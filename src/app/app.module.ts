@@ -31,10 +31,10 @@ const firebaseConfig = {
      AppRoutingModule,
       IonicStorageModule,
     AngularFireModule.initializeApp(firebaseConfig),
-     AngularFirestoreModule,
       AngularFireAuthModule],
   providers: [
     GooglePlus,
+    AngularFirestoreModule,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }, {provide: SETTINGS, useValue:{} }

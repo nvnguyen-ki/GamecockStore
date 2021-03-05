@@ -39,7 +39,7 @@ export class authentication {
       return this.fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
     }
 
-    async errorRegister() {
+    async errorLogin() {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'error: ',
@@ -49,7 +49,7 @@ export class authentication {
       await alert.present();
     }
 
-    async errorLogin() {
+    async errorRegister() {
       const alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'error: ',
@@ -98,8 +98,6 @@ export class authentication {
   userProfile() {
     return JSON.parse(localStorage.getItem('user'));
   }
-
-  
 
   returnUserID(){
     return this.userID

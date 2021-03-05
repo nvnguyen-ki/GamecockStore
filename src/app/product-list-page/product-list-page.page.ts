@@ -24,12 +24,7 @@ export class ProductListPagePage implements OnInit{
     this.itemList= this.productService.returnList();
   }
 
-  ionViewWillLeave(){
-  	console.log("will leave...homepage")
-  }
-
   ionViewWillEnter() {
-    console.log("enter home...")
     if(this.fbauth.accountType == 'owner'){
       this.hideMe=false;
     }

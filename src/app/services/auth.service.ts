@@ -35,8 +35,12 @@ export class authentication {
     }
 
     
-    googleLogin() {
-      return this.fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    async googleLogin() {
+      await this.fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      await this.db.collection("usertype").doc(this.userID).set({
+        'userType': "customer"
+      });
+      
     }
 
     async errorLogin() {

@@ -22,6 +22,7 @@ export class ProductListPagePage implements OnInit{
   }
   ngOnInit(): void {
     this.itemList= this.productService.returnList();
+    
   }
 
   ionViewWillEnter() {

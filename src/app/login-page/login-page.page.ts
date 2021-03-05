@@ -30,7 +30,7 @@ export class LoginPagePage implements OnInit {
   }
 
   goHome(){
-    this.router.navigate(['']);
+    this.router.navigate(['/tabs/product-list-page']);
   }
 
 }

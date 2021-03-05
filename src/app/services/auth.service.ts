@@ -66,6 +66,7 @@ export class authentication {
     async fBsignin(email: any, password: any) {
       return await this.fbAuth.signInWithEmailAndPassword(email, password)
       .then(async (user) => {
+        localStorage.setItem('user', JSON.stringify(user.user));
         this.userID=user.user.uid;
         await this.db.collection("usertype").doc(user.user.uid).get().then(doc =>{
           this.accountType = (doc.data().userType)

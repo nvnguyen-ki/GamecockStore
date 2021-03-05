@@ -6,6 +6,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { products } from '../services/products.service';
+import { authentication } from '../services/auth.service';
 @Component({
   selector: 'app-product-detail-page',
   templateUrl: './product-detail-page.page.html',
@@ -16,8 +17,9 @@ export class ProductDetailPagePage implements OnInit {
   item = null
   order = {quantity:1}
   loginInfo: any;
+  hideMe: boolean;
 
-  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router, public fbAuth: AngularFireAuth, public productService: products ) {
+  constructor(public orderService:orders, private route:ActivatedRoute, public alertController: AlertController, private router:Router, public fbauth: authentication, public productService: products ) {
     var user = localStorage.getItem("user")
     // check if local storage isn't empty
     if (JSON.parse(user) !== null) {
@@ -37,6 +39,16 @@ export class ProductDetailPagePage implements OnInit {
   		)
   }
 
+  ionViewWillEnter() {
+    if(this.fbauth.accountType == 'owner'){
+      this.hideMe=false;
+    }
+    else{
+      this.hideMe=true;
+    }
+    console.log(this.hideMe)
+  }
+
   async errorAlert() {
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
@@ -47,12 +59,10 @@ export class ProductDetailPagePage implements OnInit {
     await alert.present();
   }
 
-
   orderitem(){
     if (this.userid===undefined) {
       this.errorAlert()
     } else {
-      let id = Math.random() * 999999
       var today = new Date();
       var dd = String(today.getDate()).padStart(2, '0');
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -66,21 +76,13 @@ export class ProductDetailPagePage implements OnInit {
   }
 
   deleteProduct(){
-    if (this.userid === "v9WDsBRoBYPcHOFWWFJmIIrhfSq2") {
-      this.productService.deleteProduct(this.item);
-      this.goHome()
-    }
-    else {
-      this.productService.notOwnerAlert()
-    }
+    this.productService.deleteProduct(this.item);
+    this.router.navigate(["/"])
   }
 
+
   editProduct(){
-    if (this.userid === "v9WDsBRoBYPcHOFWWFJmIIrhfSq2")
-      this.router.navigate(['edit-product-page',this.item])
-    else {
-      this.productService.notOwnerAlert()
-    }
+    this.router.navigate(['edit-product-page',this.item])
   }
 
 

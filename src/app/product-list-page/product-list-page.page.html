@@ -17,7 +17,7 @@
     <ion-title >GameCock Store</ion-title>
     
 <ion-buttons slot="end">
-      <ion-button (click)="newItemView()">
+      <ion-button (click)="newItemView()" *ngIf="!hideMe">
         <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
 </ion-buttons>

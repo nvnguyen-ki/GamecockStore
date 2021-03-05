@@ -5,12 +5,12 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="editProduct()">
+      <ion-button (click)="editProduct()" *ngIf="!hideMe">
       <ion-icon name="build-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons slot="end">
-      <ion-button (click)="deleteProduct()">
+      <ion-button (click)="deleteProduct()" *ngIf="!hideMe">
       <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
     </ion-buttons>

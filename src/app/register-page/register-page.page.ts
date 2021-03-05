@@ -9,7 +9,7 @@ import {authentication} from '../services/auth.service'
   styleUrls: ['./register-page.page.scss'],
 })
 export class RegisterPagePage implements OnInit {
-
+  type = ""
   constructor(public fbAuth: authentication,
     public router: Router, public alertController:AlertController) { }
 
@@ -17,9 +17,8 @@ export class RegisterPagePage implements OnInit {
 
 
   async register(email:any, password:any){
-    console.log(await this.fbAuth.Fbregister(email.value, password.value))
-    
-}
+    console.log(await this.fbAuth.Fbregister(email.value, password.value, this.type))
+  }
 
   goLogin(){
     this.router.navigate(['login-page'])

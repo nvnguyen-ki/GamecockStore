@@ -15,11 +15,28 @@ import { ViewWillEnter } from '@ionic/angular';
 export class ProductListPagePage implements OnInit{
   itemList:Observable<any[]>
   public loaded: boolean = false;
+  hideMe=true;
+  
   constructor(private router: Router, public productService: products, public fbauth: authentication) {
-    
+        
   }
   ngOnInit(): void {
     this.itemList= this.productService.returnList();
+  }
+
+  ionViewWillLeave(){
+  	console.log("will leave...homepage")
+  }
+
+  ionViewWillEnter() {
+    console.log("enter home...")
+    if(this.fbauth.accountType == 'owner'){
+      this.hideMe=false;
+    }
+    else{
+      this.hideMe=true;
+    }
+    console.log(this.hideMe)
   }
 
   viewItem(item:any){
@@ -27,11 +44,7 @@ export class ProductListPagePage implements OnInit{
   }
 
   newItemView(){
-    if (this.fbauth.returnUserID() ==="v9WDsBRoBYPcHOFWWFJmIIrhfSq2") {
       this.router.navigate(["/add-product-page"])
-    } else {
-      this.productService.notOwnerAlert()
-    }
   }
 
   goLogin(){
@@ -40,6 +53,8 @@ export class ProductListPagePage implements OnInit{
 
   signOut(){
     this.fbauth.fblogout()
+    this.fbauth.userID=''
+  	this.hideMe=true;
     this.goLogin()
   }
 

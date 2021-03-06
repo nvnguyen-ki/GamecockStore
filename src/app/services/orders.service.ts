@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Order } from '../modal/order';
 import firebase from 'firebase/app';
 import { map } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
 @Injectable({
   providedIn: 'root'
 })
 
-export class orders {
-  uid:any
+export class orders implements OnInit{
   private order: Observable<Order[]>;
   private orderCollection:AngularFirestoreCollection<Order>;
   data = {
@@ -19,19 +19,13 @@ export class orders {
     amount: '',
     userid:''
   };
-    constructor(private db: AngularFirestore){ 
-      this.uid = JSON.parse(localStorage.getItem('user')).uid;
-      console.log(JSON.parse(localStorage.getItem('user')).uid)
-      this.orderCollection = this.db.collection<Order>('users/'+this.uid+"/orders");
-        this.order = this.orderCollection.snapshotChanges().pipe(
-        map( actions => {
-          return actions.map(a => {
-            const data = a.payload.doc.data();
-            const id = a.payload.doc.id;
-            return {id, ...data}
-          });
-        }))
-    } 
+    constructor(private db: AngularFirestore, public fbAuth: AngularFireAuth){ 
+      
+      
+  } 
+  ngOnInit() {
+    
+  }
 
     
 

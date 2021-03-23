@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="danger">
-    <ion-title >order detail page</ion-title>
+    <ion-title >item detail page</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
@@ -14,18 +14,25 @@
 
 <ion-content>
 <ion-item>
-Total Cost: {{order.totalCost}}
+order name: {{order.name}}
 </ion-item>
 
 
 <ion-item>
-Total Items: {{order.totalItems}}
+quantity: {{order.quantity}}
 </ion-item>
 
 <ion-item>
 date: {{order.date}}
 </ion-item>
 
+<ion-item>
+amount: ${{order.amount}}
+</ion-item>
+
+<ion-item>
+order id: {{order.id}}
+</ion-item>
 
 </ion-content>
 

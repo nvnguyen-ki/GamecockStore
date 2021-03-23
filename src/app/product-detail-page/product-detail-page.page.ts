@@ -69,10 +69,9 @@ export class ProductDetailPagePage implements OnInit {
       var yyyy = today.getFullYear();
       var todayStr = mm + '/' + dd + '/' + yyyy;
       var totalPrice = this.order.quantity * this.item.price
-      this.orderService.createOrder(this.item.name, this.order.quantity, todayStr, totalPrice, this.userid)
+      this.orderService.addToCart(this.item.name, this.order.quantity, todayStr, totalPrice, this.userid)
       this.goHome()
     }
-    
   }
 
   deleteProduct(){

@@ -60,7 +60,6 @@ export class EditProductPagePage implements AfterViewInit {
   
 
    editProduct(){
-    // check if owner
       this.productService.editProduct(this.product);
       this.router.navigate([""])
       this.successAlert()

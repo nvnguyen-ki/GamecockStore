@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="danger">
+    <ion-title >Cart</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addOrder()">
+      <ion-icon name="bag-add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+ </ion-toolbar>
+ </ion-header>
+ <ion-content [fullscreen]="true">
+  <ion-header>
+  <ion-toolbar>
+  <ion-title >Your Cart: </ion-title>
+  </ion-toolbar>
+    </ion-header>
+  <ion-card *ngFor="let order of (orderList|async)" (click)="viewOrder(order)">
+    <ion-item >
+      <ion-label text-wrap>name: {{order.name}}</ion-label>
+      <ion-label text-wrap>quantity: {{order.quantity}}</ion-label>
+      <ion-label text-wrap>date: {{order.date}}</ion-label>
+      <ion-label text-wrap>total: {{order.amount}}</ion-label>
+      <ion-label text-wrap>id: {{order.id}}</ion-label>
+    </ion-item>
+  </ion-card>
+  </ion-content>

@@ -25,22 +25,27 @@ export class authentication {
           localStorage.setItem('user', JSON.stringify(this.loginInfo));
           this.userID = JSON.parse(localStorage.getItem('user')).uid;
           console.log(JSON.parse(localStorage.getItem('user')).uid)
-          await this.db.collection("usertype").doc(user.uid).get().then(doc =>{
-            this.accountType = (doc.data().userType)
+          const userType = this.db.collection("usertype").doc(user.uid)
+          if (userType) {
+            userType
+            .get().then(doc =>{
+              if (doc.exists){
+                this.accountType = (doc.data().userType)
+            }
           })
+          
         } else {
+          await this.db.collection("usertype").doc(this.userID).set({
+            'userType': "customer"
+          });
           localStorage.setItem('user', null);
         }
-      })
-    }
+      }
+    })
+  }
 
-    
     async googleLogin() {
       await this.fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      await this.db.collection("usertype").doc(this.userID).set({
-        'userType': "customer"
-      });
-      
     }
 
     async errorLogin() {
@@ -62,8 +67,12 @@ export class authentication {
       });
       await alert.present();
     }
+    
+
+    
 
     async fBsignin(email: any, password: any) {
+
       return await this.fbAuth.signInWithEmailAndPassword(email, password)
       .then(async (user) => {
         localStorage.setItem('user', JSON.stringify(user.user));

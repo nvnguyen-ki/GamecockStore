@@ -26,8 +26,9 @@ export class authentication {
           this.userID = JSON.parse(localStorage.getItem('user')).uid;
           console.log(JSON.parse(localStorage.getItem('user')).uid)
           const userType = this.db.collection("usertype").doc(user.uid)
+          
           if (userType) {
-            userType
+            await userType
             .get().then(doc =>{
               if (doc.exists){
                 this.accountType = (doc.data().userType)

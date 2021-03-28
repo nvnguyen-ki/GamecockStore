@@ -35,8 +35,8 @@ export class ItemDetailPage implements OnInit {
   }
 
   deleteOrder(){
-      this.ordersList.deleteOrder(this.order,this.userid);
-      this.router.navigate(["tabs/order-list-page"])
+      this.ordersList.deleteItemCart(this.order,this.userid);
+      this.router.navigate(["tabs/cart-page"])
   }
 
 }

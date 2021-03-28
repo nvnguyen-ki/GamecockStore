@@ -68,11 +68,11 @@ export class AddProductPagePage implements OnInit {
   	else {
       checkedCategory = 'Outfit'
     }
-    await this.productService.createItem(value.name,value.price, checkedCategory, value.url, value.description, this.userid);
+    await this.productService.createItem(value.name,value.price, checkedCategory, this.imgfile, value.description, this.userid);
     this.goHome()
   }
 
-  async pickImage() {
+  async takePicture() {
     const options: CameraOptions = {
         quality: 100,
         destinationType: this.camera.DestinationType.DATA_URL,
@@ -84,12 +84,11 @@ export class AddProductPagePage implements OnInit {
         
         let imageid = (Math.floor(Math.random() * 2000)).toString();
         let filename = "userItem"+imageid+'.jpg'
-        console.log(filename+" ****** ")
       var storageRef = firebase.storage().ref();
       var ImageRef = storageRef.child('images/'+filename);
       var data='data:image/jpeg;base64,' + imageData
   
-        var uploadTask= await ImageRef.putString(data, 'data_url').then(async function(snapshot) {
+        await ImageRef.putString(data, 'data_url').then(async function(snapshot) {
            console.log('Uploaded a base64 string!');
   
              await snapshot.ref.getDownloadURL().then(async function(downloadURL) {

@@ -50,6 +50,7 @@ export class CartPagePage implements OnInit {
     this.orderList.subscribe((e: any)=>{
       this.orderService.createOrder(e,this.userID)
     })
+    this.router.navigate(["/tabs/order-list-page"])
   }
 
   viewOrder(order: any){

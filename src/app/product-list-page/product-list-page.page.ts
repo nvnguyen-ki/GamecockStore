@@ -15,18 +15,18 @@ import { ViewWillEnter } from '@ionic/angular';
 export class ProductListPagePage implements OnInit{
   itemList:Observable<any[]>
   public loaded: boolean = false;
-  hideMe=true;
+  hideMe:any = false;
   
   constructor(private router: Router, public productService: products, public fbauth: authentication) {
         
   }
   ngOnInit(): void {
     this.itemList= this.productService.returnList();
-    
   }
 
-  ionViewWillEnter() {
-    if(this.fbauth.accountType == 'owner'){
+  async ionViewWillEnter() {
+    let type = await this.fbauth.accountType
+    if(type == 'owner'){
       this.hideMe=false;
     }
     else{

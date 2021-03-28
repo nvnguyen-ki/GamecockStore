@@ -46,6 +46,7 @@ export class authentication {
 
     async googleLogin() {
       await this.fbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      
     }
 
     async errorLogin() {

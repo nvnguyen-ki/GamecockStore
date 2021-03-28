@@ -13,6 +13,8 @@ import { AngularFireModule } from '@angular/fire'
 import { SETTINGS } from '@angular/fire/firestore'
 import {AngularFirestoreModule } from '@angular/fire/firestore'
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Camera, CameraOptions } from "@ionic-native/camera/ngx";
+import { File } from "@ionic-native/file/ngx";
 const firebaseConfig = {
   apiKey: "AIzaSyDqFnjTb7KJSrT30Tj1-qjsYRwoL-M9IXI",
   authDomain: "gamecockstore-5807f.firebaseapp.com",
@@ -37,7 +39,9 @@ const firebaseConfig = {
     AngularFirestoreModule,
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }, {provide: SETTINGS, useValue:{} }
+    Camera,
+    File,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy  }, {provide: SETTINGS, useValue:{}, }
   ],
   bootstrap: [AppComponent]
 })

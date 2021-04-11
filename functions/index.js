@@ -23,7 +23,7 @@ exports.checkProductName = functions.firestore
     .onCreate((snap, context) => {
       const product = snap.data();
       let name = product.name
-      if (name.includes('ugly') || name.includes('“messy”') || name.includes('“trash”') || name.includes('“body”')) {
+      if (name.includes('ugly') || name.includes('messy') || name.includes('trash') || name.includes('body')) {
         console.log(name + ' is forbidden. Deleting and adding to forbidden key words collection')
         snap.ref.delete()
         // db.collection('products').doc(snap.id).delete()
@@ -41,13 +41,13 @@ exports.checkPriceDiff = functions.firestore
   .onUpdate((snap, context) => {
   const newPrice = (snap.after.data().price);
   const oldPrice = (snap.before.data().price);
-  let diff = (100 * Math.abs( ( parseFloat(newPrice) - parseFloat(oldPrice) ) / ( (parseFloat(newPrice)+parseFloat(oldPrice))/2 ) ))
+  var decreaseValue = parseFloat(oldPrice) - parseFloat(newPrice);
+  let diff = (decreaseValue / parseFloat(oldPrice)) * 100;
   console.log('difference percentage: ',diff)
   if (diff>50) {
-    console.log('difference is greater than 50%, will not change price')
-  } else {
-    console.log('difference is less than 50%, take oldprice and multiply by 50%')
     snap.after.ref.update({price:(0.5)*parseFloat(oldPrice)})
+  } else {
+    console.log('not changing price')
   }
   return null;
 });

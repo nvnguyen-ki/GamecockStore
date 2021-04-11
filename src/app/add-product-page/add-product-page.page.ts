@@ -46,7 +46,7 @@ export class AddProductPagePage implements OnInit {
       Bottom: new FormControl(false, Validators.required),
       Outfit: new FormControl(false, Validators.required),
       price: new FormControl(false, Validators.required),
-      url: new FormControl(this.imgfile, Validators.required)
+      url: new FormControl(this.imgfile)
       // date:new FormControl('', Validators.required)
     });
   }
@@ -55,6 +55,15 @@ export class AddProductPagePage implements OnInit {
 
   goHome(){
     this.router.navigate(['']);
+  }
+
+
+  async fetchIMG(url:any) {
+    // Fetch the photo, read as a blob, then convert to base64 format
+    const response = await fetch(url);
+    console.log(response)
+    const blob = await response.blob();
+    return blob
   }
 
   async addItem(value: { Top: boolean; Bottom: boolean; name: any; price: any; url: any; description: any; }){
@@ -68,6 +77,21 @@ export class AddProductPagePage implements OnInit {
   	else {
       checkedCategory = 'Outfit'
     }
+    
+    let imageid = (Math.floor(Math.random() * 2000)).toString();
+    let filename = "userItem"+imageid+'.jpg'
+
+    
+    const blob = await this.fetchIMG(this.imgfile)
+      var metadata = {
+        contentType: blob.type
+      }
+      firebase.storage().ref().child("images/"+filename).put(blob,metadata).then(function(snapshot) {
+        return snapshot.ref.getDownloadURL()
+     }).then(url => {
+       console.log("Firebase storage image uploaded : ", url); 
+    })
+    
     await this.productService.createItem(value.name,value.price, checkedCategory, this.imgfile, value.description, this.userid);
     this.goHome()
   }

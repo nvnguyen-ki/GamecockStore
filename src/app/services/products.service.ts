@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import {Storage} from '@ionic/storage'
+
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import firebase from 'firebase/app';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Product } from '../modal/product';
 import { AlertController } from '@ionic/angular';
-
+import('firebase/database');
 @Injectable({
   providedIn: 'root'
 })
@@ -58,7 +59,11 @@ export class products {
       );
     }
 
-    createItem(name:any,price:any, category:any, url:any, description:any, uid:any) : Promise<void>{
+    async createItem(name:any,price:any, category:any, url:any, description:any, uid:any) : Promise<void>{
+      var thumbnailURL:any
+      var thumbnail = (await firebase.database().ref('images/').orderByKey().limitToLast(1).get()).val()
+      var temp:any = Object.values(thumbnail)[0]
+      thumbnailURL = temp.thumbnail
       var data: Product
       data = {
         name: name,
@@ -66,7 +71,8 @@ export class products {
         category: category || '',
         src: url,
         description: description,
-        userid:uid
+        userid:uid,
+        thumbnail:thumbnailURL || ''
       };
       const id = this.db.createId();
       return this.db.collection("products").doc(id).set(Object.assign({}, data));

@@ -5,5 +5,6 @@ export interface Product {
     price: number,
     src: string,
     userid:string,
-    description:string
+    description:string,
+    thumbnail?:any
   }

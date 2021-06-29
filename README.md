@@ -1,6 +1,6 @@
-#### Homework 2
 
-How to run the GameCockStore app
+
+GameCockStore app
 
 ```
 npm i
